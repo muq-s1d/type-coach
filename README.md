@@ -9,7 +9,7 @@
 [![Dependencies](https://img.shields.io/badge/dependencies-none-34C759?style=flat-square)](#)
 [![Data](https://img.shields.io/badge/data-100%25%20local-34C759?style=flat-square)](#privacy)
 [![Version](https://img.shields.io/badge/version-0.1.0-8E8E93?style=flat-square)](#)
-[![Stars](https://img.shields.io/github/stars/muq-s1d/type-coach?style=flat-square&color=0A84FF)](https://github.com/muq-s1d/type-coach/stargazers)
+[![License](https://img.shields.io/badge/license-MIT-8E8E93?style=flat-square)](LICENSE)
 
 </div>
 
@@ -91,15 +91,9 @@ Corrections lower your speed, because the time spent backspacing counts while
 the deleted characters do not. That is deliberate: it measures *net* speed, the
 same thing a standard typing test reports.
 
-## Roadmap
+## License
 
-- [ ] Publish to the Chrome Web Store
-- [ ] Per-site breakdown (coding vs prose vs chat)
-- [ ] Bigram analysis (`th`, `io`) for finger-transition weak spots
-- [ ] Hero delta, e.g. "+3 from last week"
-- [ ] Export stats as JSON
-
-## Credits
+[MIT](LICENSE).
 
 Typeface is [Inter](https://github.com/rsms/inter) by Rasmus Andersson, bundled
 under the SIL Open Font License 1.1 (see `fonts/LICENSE.txt`).

@@ -79,38 +79,64 @@
 
 .row-value.positive { color: var(--positive); }
 
-/* ---------------------------------------------------------- Definitions ---
- * Term and description stacked, separated by the same hairline as list rows.
+/* ------------------------------------------------- Reference (non-card) ---
+ * Glossary and privacy assurances are read, never operated. Putting them in
+ * cards with hairline rows borrowed the affordance of a tappable settings
+ * list, so both drop the card entirely: no surface, no separators, no row
+ * rhythm. They sit on the canvas as documentation.
  */
-.def {
-  padding: 12px 18px;
-  position: relative;
+.glossary {
+  display: grid;
+  grid-template-columns: 104px 1fr;
+  gap: 13px 24px;
+  margin: 0;
+  padding: 2px var(--inset) 0;
 }
 
-.def + .def::before {
-  content: "";
-  position: absolute;
-  left: 18px;
-  right: 0;
-  top: 0;
-  height: 1px;
-  transform: scaleY(0.5);
-  background: var(--separator);
-}
-
-.def-term {
-  display: block;
-  font-size: 15px;
+.glossary dt {
+  font-size: 14px;
   font-weight: 600;
   letter-spacing: -0.01em;
-  margin-bottom: 2px;
+  color: var(--label);
 }
 
-.def-desc {
-  display: block;
-  font-size: 13px;
-  line-height: 1.45;
+.glossary dd {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.5;
   color: var(--label-2);
+}
+
+.assurances {
+  list-style: none;
+  margin: 0;
+  padding: 2px var(--inset) 0;
+  display: grid;
+  gap: 12px;
+}
+
+.assurances li {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--label-2);
+}
+
+/* The tick carries the reassurance; the text stays quiet. */
+.assurances .tick {
+  flex: 0 0 auto;
+  margin-top: 3px;
+  color: var(--positive);
+}
+
+@media (max-width: 640px) {
+  .glossary {
+    grid-template-columns: 1fr;
+    gap: 4px;
+  }
+  .glossary dd { margin-bottom: 12px; }
 }
 
 .group { margin-top: 28px; }

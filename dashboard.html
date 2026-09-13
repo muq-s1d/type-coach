@@ -110,28 +110,22 @@
 
       <section class="group rise">
         <h2 class="group-header">What These Mean</h2>
-        <div class="card defs">
-          <div class="def">
-            <span class="def-term">Average</span>
-            <span class="def-desc">Your speed across all typing ever measured. One word counts as five characters.</span>
-          </div>
-          <div class="def">
-            <span class="def-term">Recent</span>
-            <span class="def-desc">Your speed over the last minute. Blank until you have typed a few words in that window.</span>
-          </div>
-          <div class="def">
-            <span class="def-term">Best</span>
-            <span class="def-desc">The fastest sustained stretch you have recorded, measured over at least three seconds.</span>
-          </div>
-          <div class="def">
-            <span class="def-term">Clean</span>
-            <span class="def-desc">Share of words typed without pressing backspace. Higher means fewer corrections.</span>
-          </div>
-          <div class="def">
-            <span class="def-term">Trend</span>
-            <span class="def-desc">One bar per day, scaled against your best day shown. Days with no typing stay blank.</span>
-          </div>
-        </div>
+        <dl class="glossary">
+          <dt>Average</dt>
+          <dd>Your speed across all typing ever measured. One word counts as five characters.</dd>
+
+          <dt>Recent</dt>
+          <dd>Your speed over the last minute. Blank until you have typed a few words in that window.</dd>
+
+          <dt>Best</dt>
+          <dd>The fastest sustained stretch you have recorded, measured over at least three seconds.</dd>
+
+          <dt>Clean</dt>
+          <dd>Share of words typed without pressing backspace. Higher means fewer corrections.</dd>
+
+          <dt>Trend</dt>
+          <dd>One bar per day, scaled against your best day shown. Days with no typing stay blank.</dd>
+        </dl>
         <p class="group-footer">
           Idle time is never counted. Pauses longer than three seconds are
           excluded, so stepping away does not change your speed either way.
@@ -140,28 +134,16 @@
 
       <section class="group rise">
         <h2 class="group-header">Privacy</h2>
-        <div class="card">
-          <div class="row">
-            <span class="row-label">Data leaves this device</span>
-            <span class="row-value positive">Never</span>
-          </div>
-          <div class="row">
-            <span class="row-label">Password and payment fields</span>
-            <span class="row-value positive">Ignored</span>
-          </div>
-          <div class="row">
-            <span class="row-label">Words containing digits or symbols</span>
-            <span class="row-value positive">Discarded</span>
-          </div>
-          <div class="row">
-            <span class="row-label">Order words were typed in</span>
-            <span class="row-value positive">Not recorded</span>
-          </div>
-        </div>
+        <ul class="assurances">
+          <li><svg class="tick" width="15" height="15" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8.6l3.1 3.1L13 4.9" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Nothing you type ever leaves this device.</span></li>
+          <li><svg class="tick" width="15" height="15" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8.6l3.1 3.1L13 4.9" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Password, one time code and payment fields are never observed.</span></li>
+          <li><svg class="tick" width="15" height="15" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8.6l3.1 3.1L13 4.9" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Words containing digits or symbols are discarded immediately.</span></li>
+          <li><svg class="tick" width="15" height="15" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8.6l3.1 3.1L13 4.9" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Only words you type at least three times are ever stored.</span></li>
+          <li><svg class="tick" width="15" height="15" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8.6l3.1 3.1L13 4.9" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"/></svg><span>The order you typed words in is never recorded, so your text cannot be reconstructed.</span></li>
+        </ul>
         <p class="group-footer">
-          Only whole alphabetic words are kept, and only once one has recurred at
-          least three times. Statistics are stored as counts and timings, so the
-          text you wrote cannot be reconstructed.
+          The only permission this extension requests is storage. It has no
+          network access at all.
         </p>
       </section>
 
