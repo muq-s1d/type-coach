@@ -1,6 +1,6 @@
 {
   "manifest_version": 3,
-  "name": "Typing Coach",
+  "name": "Type Coach",
   "version": "0.1.0",
   "description": "Tracks your real typing speed as you browse and shows which words you get stuck on. All data stays on your device.",
   "permissions": ["storage"],
@@ -23,7 +23,7 @@
   },
   "action": {
     "default_popup": "popup.html",
-    "default_title": "Typing Coach",
+    "default_title": "Type Coach",
     "default_icon": {
       "16": "icons/icon16.png",
       "32": "icons/icon32.png",

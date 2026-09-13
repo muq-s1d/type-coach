@@ -1,83 +1,105 @@
-# Typing Coach
+<div align="center">
 
-A Chrome extension (Manifest V3) that measures your **real** typing speed as you
-browse — not in a typing-test box, but in the emails, docs, and chats you
-actually write — and tells you **which words slow you down or trip you up**.
+# Type Coach
 
-## The privacy model (read this first)
+**Measure your real typing speed — not in a typing test, but in the emails, docs and chats you actually write.**
+
+[![Manifest V3](https://img.shields.io/badge/manifest-v3-0A84FF?style=flat-square&logo=googlechrome&logoColor=white)](https://developer.chrome.com/docs/extensions/mv3/intro/)
+[![Vanilla JS](https://img.shields.io/badge/built%20with-vanilla%20JS-F7DF1E?style=flat-square&logo=javascript&logoColor=black)](#)
+[![Dependencies](https://img.shields.io/badge/dependencies-none-34C759?style=flat-square)](#)
+[![Data](https://img.shields.io/badge/data-100%25%20local-34C759?style=flat-square)](#privacy)
+[![Version](https://img.shields.io/badge/version-0.1.0-8E8E93?style=flat-square)](#)
+[![Stars](https://img.shields.io/github/stars/muq-s1d/type-coach?style=flat-square&color=0A84FF)](https://github.com/muq-s1d/type-coach/stargazers)
+
+</div>
+
+---
+
+Typing tests tell you how fast you type *a typing test*. Type Coach measures the
+typing you actually do all day, then tells you **which words slow you down and
+which ones you keep having to fix** — the things worth practising.
+
+## Features
+
+- **Real-world speed.** Words per minute measured from ordinary typing anywhere
+  in Chrome, using the standard five-keystrokes-per-word convention.
+- **Idle never counts.** Only gaps under three seconds count as typing, so
+  stepping away neither inflates nor deflates your number.
+- **Your slowest words.** Ranked by how far below your own average each one
+  falls, with an inline meter so the list reads at a glance.
+- **Your most-corrected words.** The share of attempts where you had to
+  backspace, so you can see which spellings you never quite get right.
+- **Daily trend.** A bar per day, 14 in the popup and 30 on the dashboard, so
+  progress is visible rather than assumed.
+- **Clean rate.** The share of words typed without a single correction.
+- **Light and dark.** Follows your system theme automatically.
+
+## Privacy
 
 An extension that watches keystrokes is, structurally, a keylogger. This one is
-built so that it *cannot* meaningfully leak what you type:
+built so that it **cannot meaningfully leak what you type**:
 
-1. **Sensitive fields are ignored.** Password, one-time-code, and credit-card
-   fields (by input type and `autocomplete` hint) are never observed.
-2. **Only whole alphabetic words survive.** A token is kept only if it's letters
-   (plus internal `'`/`-`), 2–20 chars long. Anything with digits, symbols, or
-   random casing — passwords, card numbers, API keys — is discarded on the spot.
-3. **A word must recur ≥3 times** before it's ever shown. One-off secrets never
-   reach the UI.
-4. **Aggregates only, never sequences.** We store `word → {count, time,
-   corrections}`. The order you typed words in is never recorded, so text can't
-   be reconstructed.
-5. **Nothing leaves your device.** Data lives in `chrome.storage.local`. There is
-   no server and no network permission.
+| Guarantee | How |
+|---|---|
+| Sensitive fields are never observed | Password, one-time-code and payment fields are skipped by input type and `autocomplete` hint |
+| Secrets cannot survive | Only letters (plus internal `'` and `-`), 2–20 characters, are kept. Anything with digits, symbols or odd casing is discarded on the spot |
+| One-off text never appears | A word must recur **three times** before it is stored or shown |
+| Your text cannot be reconstructed | Only aggregates are kept (`word → count, time, corrections`). The order you typed words in is never recorded |
+| Nothing leaves your device | Data lives in `chrome.storage.local`. No server, no analytics, and the extension requests **no network permission at all** |
 
-## How it's built
+The only permission requested is `storage`.
 
-| File | Role |
-|------|------|
-| `manifest.json` | Config + permissions (only `storage`). |
-| `content.js` | Injected into pages. Watches keystroke *timing*, builds one word at a time in memory, ships a summary, forgets the characters. |
-| `background.js` | Service worker. Aggregates word stats and per-day buckets, computes WPM, persists to storage. |
-| `render.js` | Shared view helpers: count-up, trend strip, row meters, ring. |
-| `theme.css` | Design tokens and primitives shared by both views. |
-| `popup.*` | Toolbar popup: hero WPM, 14-day trend, top three word lists. |
-| `dashboard.*` | Full options page: 30-day trend, deep lists, overview, privacy, reset. |
-| `fonts/`, `icons/` | Bundled Inter (SIL OFL) and the app icon. |
+## Install
 
-Data flow: `keydown` → content script measures a finished word →
-`chrome.runtime.sendMessage` → background aggregates + saves → a view requests
-`GET_SUMMARY` (popup) or `GET_FULL` (dashboard) on open.
+### From the Chrome Web Store
 
-## Stats, defined
+Not published yet. The store link will appear here once it is.
 
-- **Average** — lifetime `characters ÷ 5 ÷ active typing minutes`.
-- **Recent** — the same over the last 60 seconds. Suppressed below 4 words or a
-  3-second span, since tiny windows produce meaningless spikes.
-- **Best** — highest recent-window reading ever recorded.
-- **Clean** — share of words typed with no correction.
-- **Active typing time** — gaps between keystrokes *under 3 seconds*. Longer
-  pauses are excluded, so idle time neither inflates nor deflates your speed.
+### From source
 
-## Load it in Chrome (development)
+```bash
+git clone https://github.com/muq-s1d/type-coach.git
+```
 
-1. Open `chrome://extensions`.
-2. Turn on **Developer mode** (top-right).
-3. Click **Load unpacked** and select this `typing-coach` folder.
-4. Type normally on any site, then click the extension icon to see stats.
-5. After changing any file, hit the **reload** ↻ button on the card.
+Then load it into Chrome:
 
-> After reloading the extension, **refresh any open page** before typing.
-> Reloading orphans the content script already running in open tabs, so nothing
+1. Open `chrome://extensions`
+2. Turn on **Developer mode** (top right)
+3. Click **Load unpacked** and select the cloned `type-coach` folder
+4. Type normally on any site, then click the toolbar icon
+
+To update, `git pull` and press the **reload** ↻ button on the extension card.
+
+> **After reloading the extension, refresh any open tabs before typing.**
+> Reloading orphans the content script already running in those tabs, so nothing
 > is recorded from them until the page is refreshed.
 
 Content scripts cannot run on `chrome://` pages, the Chrome Web Store, or the
-address bar. Test on an ordinary site.
+address bar, so test on an ordinary site.
 
-## Design notes
+## What the numbers mean
 
-The UI follows Apple's iOS Settings language: grouped inset cards on a recessed
-canvas, sub-pixel hairline separators inset to the content edge, a three-tier
-label hierarchy, and a single accent. Light and dark follow the system via
-`prefers-color-scheme`. Inter is bundled locally because MV3's CSP blocks remote
-fonts, and a bundled face keeps typography identical across platforms.
+| Stat | Definition |
+|---|---|
+| **Average** | Lifetime characters ÷ 5 ÷ active typing minutes |
+| **Recent** | The same over the last 60 seconds. Hidden below 4 words or a 3-second span, since tiny samples produce meaningless spikes |
+| **Best** | The highest recent-window reading ever recorded |
+| **Clean** | Share of words typed with no correction. Needs 20 words before it reports |
+| **Active typing time** | Gaps between keystrokes under 3 seconds. Longer pauses are excluded entirely |
 
-Native dialogs (`alert`/`confirm`) are never used: they render clipped inside
-extension popups. Destructive actions use a two-click inline confirm instead.
+Corrections lower your speed, because the time spent backspacing counts while
+the deleted characters do not. That is deliberate: it measures *net* speed, the
+same thing a standard typing test reports.
 
-## Ideas / next steps
+## Roadmap
 
-- Per-site breakdown (coding vs prose vs chat).
-- Bigram/digraph analysis ("th", "io") for finger-transition weak spots.
-- Hero delta ("+3 from last week"), now that daily history exists.
-- Export stats as JSON.
+- [ ] Publish to the Chrome Web Store
+- [ ] Per-site breakdown (coding vs prose vs chat)
+- [ ] Bigram analysis (`th`, `io`) for finger-transition weak spots
+- [ ] Hero delta, e.g. "+3 from last week"
+- [ ] Export stats as JSON
+
+## Credits
+
+Typeface is [Inter](https://github.com/rsms/inter) by Rasmus Andersson, bundled
+under the SIL Open Font License 1.1 (see `fonts/LICENSE.txt`).
