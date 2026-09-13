@@ -1,0 +1,453 @@
+/* theme.css
+ * Shared design tokens and primitives for the popup and the dashboard.
+ *
+ * Design language: Apple iOS "Settings" — a grouped-inset list system.
+ * Cards float on a recessed canvas, separated by hairlines that inset to the
+ * content edge. Colour is carried almost entirely by a three-tier label
+ * hierarchy; exactly one accent (systemBlue) is allowed to speak.
+ *
+ * Values below are Apple's published system colours, not approximations.
+ */
+
+/* Inter, bundled locally. Shipping the file rather than linking a CDN is not
+ * optional here: MV3's content security policy blocks remote fonts outright,
+ * and a bundled face also guarantees identical typography on every OS instead
+ * of drifting to whatever the system happens to provide.
+ * Inter is SIL OFL 1.1 — see fonts/LICENSE.txt.
+ */
+@font-face {
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 400;
+  font-display: block;
+  src: url("fonts/inter-400.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 500;
+  font-display: block;
+  src: url("fonts/inter-500.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 600;
+  font-display: block;
+  src: url("fonts/inter-600.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 700;
+  font-display: block;
+  src: url("fonts/inter-700.woff2") format("woff2");
+}
+
+:root {
+  /* --- Surfaces --- */
+  --canvas: #f2f2f7;          /* systemGroupedBackground */
+  --card: #ffffff;            /* secondarySystemGroupedBackground */
+  --card-pressed: #d1d1d6;
+
+  /* --- Three-tier label hierarchy --- */
+  --label: #000000;
+  --label-2: rgba(60, 60, 67, 0.6);
+  --label-3: rgba(60, 60, 67, 0.3);
+
+  /* --- Lines --- */
+  --separator: rgba(60, 60, 67, 0.29);
+
+  /* --- Accents --- */
+  --accent: #007aff;          /* systemBlue */
+  --destructive: #ff3b30;     /* systemRed */
+  --positive: #34c759;        /* systemGreen */
+  --warn: #ff9500;            /* systemOrange, used for correction meters */
+  --track: rgba(60, 60, 67, 0.13);
+  /* Past days in the trend. Needs more weight on black than on white to hold
+   * the same apparent contrast. */
+  --trend-past: color-mix(in srgb, var(--accent) 30%, transparent);
+
+  /* --- Geometry --- */
+  --radius: 10px;
+  --inset: 16px;
+
+  /* Apple's decelerating curve. Motion should feel released, not launched. */
+  --ease: cubic-bezier(0.32, 0.72, 0, 1);
+
+  color-scheme: light;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --canvas: #000000;
+    --card: #1c1c1e;
+    --card-pressed: #2c2c2e;
+
+    --label: #ffffff;
+    --label-2: rgba(235, 235, 245, 0.6);
+    --label-3: rgba(235, 235, 245, 0.3);
+
+    --separator: rgba(84, 84, 88, 0.65);
+
+    --accent: #0a84ff;
+    --destructive: #ff453a;
+    --positive: #30d158;
+    --warn: #ff9f0a;
+    --track: rgba(235, 235, 245, 0.16);
+    --trend-past: color-mix(in srgb, var(--accent) 52%, transparent);
+
+    color-scheme: dark;
+  }
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--canvas);
+  color: var(--label);
+  /* Inter first for a consistent face everywhere; the native stack remains as
+   * a fallback so the layout never reflows if the font fails to load. */
+  font-family: "Inter", -apple-system, BlinkMacSystemFont, "SF Pro Text",
+    "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
+  /* Inter's contextual alternates fix the "tt"/"ti" pairs; cv11 gives the
+   * single-storey "a"-adjacent forms that read closer to SF Pro. */
+  font-feature-settings: "cv11" 1, "calt" 1;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* ---------------------------------------------------------------- Hero ---
+ * One number, oversized and tightly tracked. Tabular figures keep the digits
+ * from shifting as the value animates.
+ */
+.hero { text-align: center; }
+
+.hero-value {
+  font-size: 72px;
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: -0.045em;
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum" 1, "ss01" 1;
+  color: var(--label);
+}
+
+.hero-unit {
+  margin-top: 6px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--label-2);
+  letter-spacing: -0.01em;
+}
+
+.hero-caption {
+  margin-top: 2px;
+  font-size: 11px;
+  color: var(--label-3);
+  letter-spacing: -0.005em;
+}
+
+/* ------------------------------------------------------------ Segments ---
+ * Secondary stats: a row of equal columns divided by hairlines.
+ */
+.segment {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  background: var(--card);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+
+.seg-item {
+  padding: 12px 4px;
+  text-align: center;
+  position: relative;
+}
+
+/* Hairline between columns, vertically inset so it never touches the edges. */
+.seg-item + .seg-item::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 10px;
+  bottom: 10px;
+  width: 1px;
+  transform: scaleX(0.5);
+  background: var(--separator);
+}
+
+.seg-value {
+  font-size: 19px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  font-variant-numeric: tabular-nums;
+  color: var(--label);
+}
+
+.seg-label {
+  margin-top: 2px;
+  font-size: 11px;
+  color: var(--label-2);
+  letter-spacing: -0.005em;
+}
+
+/* --------------------------------------------------------------- Trend ---
+ * A strip of daily bars. Days without typing keep their slot and show a stub,
+ * so gaps in the habit are visible rather than silently collapsed.
+ */
+.trend {
+  display: flex;
+  align-items: flex-end;
+  gap: 3px;
+  height: 34px;
+}
+
+.trend-bar {
+  flex: 1;
+  min-height: 2px;
+  border-radius: 2px;
+  background: var(--trend-past);
+  transform-origin: bottom;
+  animation: grow 520ms var(--ease) backwards;
+}
+
+.trend-bar.today { background: var(--accent); }
+.trend-bar.empty { background: var(--track); }
+
+@keyframes grow {
+  from { transform: scaleY(0); opacity: 0; }
+  to   { transform: scaleY(1); opacity: 1; }
+}
+
+.trend-axis {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 6px;
+  font-size: 10px;
+  color: var(--label-3);
+  letter-spacing: -0.005em;
+}
+
+/* ---------------------------------------------------------------- Meter ---
+ * The inline bar inside a list row. Encodes magnitude so a list can be read
+ * by shape rather than by parsing every number.
+ */
+.meter {
+  flex: 1;
+  max-width: 84px;
+  height: 3px;
+  border-radius: 2px;
+  background: var(--track);
+  overflow: hidden;
+}
+
+.meter-fill {
+  display: block;
+  height: 100%;
+  border-radius: 2px;
+  background: var(--accent);
+  transform-origin: left;
+  animation: fill 620ms var(--ease) backwards;
+}
+
+.meter-fill.warn { background: var(--warn); }
+
+@keyframes fill {
+  from { transform: scaleX(0); }
+  to   { transform: scaleX(1); }
+}
+
+/* ----------------------------------------------------------------- Ring ---
+ * Clean rate as a thin progress ring with the value set inside it.
+ */
+.ring { position: relative; display: inline-block; line-height: 0; }
+
+.ring svg { transform: rotate(-90deg); display: block; }
+
+.ring-track { stroke: var(--track); }
+
+.ring-fill {
+  stroke: var(--positive);
+  stroke-linecap: round;
+  transition: stroke-dashoffset 900ms var(--ease);
+}
+
+.ring-value {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+  color: var(--label);
+}
+
+/* ------------------------------------------------------------ Onboarding ---
+ * The first-run moment. Reads as "not yet", never as "broken".
+ */
+.onboard {
+  text-align: center;
+  padding: 34px 22px 30px;
+}
+
+.onboard-mark {
+  width: 54px;
+  height: 54px;
+  margin: 0 auto 18px;
+  border-radius: 14px;
+  background: color-mix(in srgb, var(--accent) 12%, transparent);
+  display: grid;
+  place-items: center;
+  color: var(--accent);
+}
+
+.onboard-title {
+  font-size: 17px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  margin: 0 0 6px;
+}
+
+.onboard-body {
+  font-size: 13px;
+  line-height: 1.45;
+  color: var(--label-2);
+  margin: 0;
+  max-width: 34ch;
+  margin-inline: auto;
+}
+
+/* --------------------------------------------------------------- Group ---
+ * The grouped-inset list: a titled card with hairline-separated rows.
+ */
+.group { margin-top: 22px; }
+
+.group-header {
+  font-size: 12px;
+  font-weight: 400;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--label-2);
+  padding: 0 var(--inset) 6px;
+}
+
+.group-footer {
+  font-size: 11px;
+  line-height: 1.4;
+  color: var(--label-2);
+  padding: 6px var(--inset) 0;
+}
+
+.card {
+  background: var(--card);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  min-height: 42px;
+  padding: 9px 14px;
+  position: relative;
+}
+
+/* Separator inset to the content edge, the way iOS draws it. */
+.row + .row::before {
+  content: "";
+  position: absolute;
+  left: 14px;
+  right: 0;
+  top: 0;
+  height: 1px;
+  transform: scaleY(0.5);
+  background: var(--separator);
+}
+
+.row-label {
+  font-size: 15px;
+  letter-spacing: -0.01em;
+  color: var(--label);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.row-value {
+  font-size: 14px;
+  color: var(--label-2);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.row-empty {
+  font-size: 13px;
+  color: var(--label-3);
+  padding: 14px;
+  text-align: center;
+  line-height: 1.4;
+}
+
+/* ------------------------------------------------------------- Actions --- */
+.action-row {
+  display: block;
+  width: 100%;
+  background: var(--card);
+  border: 0;
+  border-radius: var(--radius);
+  padding: 12px 14px;
+  font: inherit;
+  font-size: 15px;
+  letter-spacing: -0.01em;
+  color: var(--accent);
+  text-align: center;
+  cursor: pointer;
+  transition: background 120ms var(--ease);
+}
+
+.action-row:active { background: var(--card-pressed); }
+.action-row.destructive { color: var(--destructive); }
+
+.action-row.armed {
+  background: var(--destructive);
+  color: #fff;
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* -------------------------------------------------------------- Motion ---
+ * A single orchestrated entrance. Elements settle in sequence rather than
+ * animating independently.
+ */
+@keyframes rise {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: none; }
+}
+
+.rise {
+  opacity: 0;
+  animation: rise 460ms var(--ease) forwards;
+}
+
+.rise:nth-of-type(1) { animation-delay: 20ms; }
+.rise:nth-of-type(2) { animation-delay: 70ms; }
+.rise:nth-of-type(3) { animation-delay: 120ms; }
+.rise:nth-of-type(4) { animation-delay: 170ms; }
+.rise:nth-of-type(5) { animation-delay: 220ms; }
+
+@media (prefers-reduced-motion: reduce) {
+  .rise { animation: none; opacity: 1; }
+  * { transition-duration: 1ms !important; }
+}

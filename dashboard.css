@@ -1,0 +1,116 @@
+/* dashboard.css — the full-page options view.
+ * Same grouped-inset language as the popup, given room to open up.
+ */
+
+.page {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 56px 24px 88px;
+}
+
+/* ----------------------------------------------------------- Masthead --- */
+.masthead { margin-bottom: 28px; }
+
+.title {
+  margin: 0;
+  font-size: 32px;
+  font-weight: 700;
+  letter-spacing: -0.025em;
+}
+
+.subtitle {
+  margin: 5px 0 0;
+  font-size: 15px;
+  color: var(--label-2);
+  letter-spacing: -0.01em;
+}
+
+/* --------------------------------------------------------------- Hero ---
+ * The one moment of scale. A card, but padded far past list proportions so
+ * the number reads as a headline rather than a table cell.
+ */
+.panel {
+  background: var(--card);
+  border-radius: 16px;
+  padding: 40px 28px 22px;
+}
+
+.panel .hero-value { font-size: 96px; }
+.panel .hero-unit { font-size: 15px; margin-top: 8px; }
+.panel .hero-caption { font-size: 12px; }
+
+/* The trend is given real height here, where there is room for it. */
+.panel .trend-block { margin-top: 28px; }
+.panel .trend { height: 58px; gap: 4px; }
+
+/* Nested segment sits flush inside the hero card, so it reads as part of the
+ * same object. A hairline, not a gap, does the separating. */
+.hero-segment {
+  margin-top: 26px;
+  padding-top: 18px;
+  border-radius: 0;
+  background: none;
+  border-top: 1px solid var(--separator);
+}
+
+.panel .seg-value { font-size: 22px; }
+.panel .seg-label { font-size: 12px; }
+
+/* ------------------------------------------------------------ Columns --- */
+.columns {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 22px;
+  align-items: start;
+}
+
+.columns .group { margin-top: 28px; }
+
+@media (max-width: 640px) {
+  .columns { grid-template-columns: 1fr; gap: 0; }
+  .page { padding: 36px 18px 64px; }
+  .panel .hero-value { font-size: 72px; }
+  .title { font-size: 26px; }
+}
+
+/* Rows breathe more here than in the popup. */
+.card .row { min-height: 46px; padding: 11px 18px; }
+.card .row + .row::before { left: 18px; }
+
+.row-value.positive { color: var(--positive); }
+
+/* ---------------------------------------------------------- Definitions ---
+ * Term and description stacked, separated by the same hairline as list rows.
+ */
+.def {
+  padding: 12px 18px;
+  position: relative;
+}
+
+.def + .def::before {
+  content: "";
+  position: absolute;
+  left: 18px;
+  right: 0;
+  top: 0;
+  height: 1px;
+  transform: scaleY(0.5);
+  background: var(--separator);
+}
+
+.def-term {
+  display: block;
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  margin-bottom: 2px;
+}
+
+.def-desc {
+  display: block;
+  font-size: 13px;
+  line-height: 1.45;
+  color: var(--label-2);
+}
+
+.group { margin-top: 28px; }

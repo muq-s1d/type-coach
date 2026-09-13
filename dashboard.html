@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Typing Coach</title>
+    <link rel="stylesheet" href="theme.css" />
+    <link rel="stylesheet" href="dashboard.css" />
+  </head>
+  <body>
+    <div class="page">
+      <header class="masthead rise">
+        <h1 class="title">Typing Coach</h1>
+        <p class="subtitle">Measured from your everyday typing, entirely on this device.</p>
+      </header>
+
+      <!-- First run: replaces the hero until words have been measured. -->
+      <section class="panel onboard rise" id="onboard" hidden>
+        <div class="onboard-mark">
+          <!-- Keystroke rhythm rising into a text cursor: the tempo this
+                 extension measures, resolving into the app's own I-beam mark. -->
+            <svg width="30" height="30" viewBox="0 0 28 28" fill="currentColor" aria-hidden="true">
+              <rect x="3.6" y="11.4" width="1.8" height="5.2" rx=".9" opacity=".4"/>
+              <rect x="8.4" y="9.4" width="1.8" height="9.2" rx=".9" opacity=".64"/>
+              <rect x="13.2" y="7.4" width="1.8" height="13.2" rx=".9" opacity=".85"/>
+              <rect x="19.6" y="5.6" width="1.8" height="16.8" rx=".9"/>
+              <rect x="16.6" y="5.6" width="7.8" height="1.8" rx=".9"/>
+              <rect x="16.6" y="20.6" width="7.8" height="1.8" rx=".9"/>
+            </svg>
+        </div>
+        <h2 class="onboard-title">No typing measured yet</h2>
+        <p class="onboard-body">
+          Type anywhere in Chrome and your speed will appear here. Password and
+          payment fields are ignored, and nothing leaves this device.
+        </p>
+      </section>
+
+      <section class="hero panel rise" id="hero">
+        <div class="hero-value" id="avgWpm">&ndash;&ndash;</div>
+        <div class="hero-unit">words per minute</div>
+        <div class="hero-caption">Lifetime average across <span id="totalWords">0</span> words</div>
+
+        <div class="trend-block">
+          <div class="trend" id="trend"></div>
+          <div class="trend-axis" id="trendAxis"></div>
+        </div>
+
+        <div class="segment hero-segment">
+          <div class="seg-item" title="Your speed over the last minute of typing">
+            <div class="seg-value" id="recentWpm">&ndash;&ndash;</div>
+            <div class="seg-label">Recent</div>
+          </div>
+          <div class="seg-item" title="The fastest sustained stretch you have recorded">
+            <div class="seg-value" id="bestWpm">&ndash;&ndash;</div>
+            <div class="seg-label">Best</div>
+          </div>
+          <div class="seg-item" title="Share of words you typed without pressing backspace">
+            <div class="ring" id="cleanRing"></div>
+            <div class="seg-label">Clean</div>
+          </div>
+        </div>
+      </section>
+
+      <div class="columns">
+        <section class="group rise">
+          <h2 class="group-header">Slowest Words</h2>
+          <div class="card" id="slowest"></div>
+          <p class="group-footer">
+            Words you type slowest. The bar shows how far below your overall
+            average each one falls, so a longer bar means a bigger drag on your
+            speed.
+          </p>
+        </section>
+
+        <section class="group rise">
+          <h2 class="group-header">Most Corrected</h2>
+          <div class="card" id="mostCorrected"></div>
+          <p class="group-footer">
+            Share of attempts where you had to backspace, so “60% of 5” means 3
+            of 5 tries needed a fix. The bar length matches that share.
+          </p>
+        </section>
+      </div>
+
+      <section class="group rise">
+        <h2 class="group-header">Overview</h2>
+        <div class="card">
+          <div class="row">
+            <span class="row-label">Words measured</span>
+            <span class="row-value" id="ovWords">0</span>
+          </div>
+          <div class="row">
+            <span class="row-label">Characters typed</span>
+            <span class="row-value" id="ovChars">0</span>
+          </div>
+          <div class="row">
+            <span class="row-label">Words analysed</span>
+            <span class="row-value" id="ovTracked">0</span>
+          </div>
+          <div class="row">
+            <span class="row-label">Time spent typing</span>
+            <span class="row-value" id="ovTime">0m</span>
+          </div>
+          <div class="row">
+            <span class="row-label">Tracking since</span>
+            <span class="row-value" id="ovSince">&ndash;</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="group rise">
+        <h2 class="group-header">What These Mean</h2>
+        <div class="card defs">
+          <div class="def">
+            <span class="def-term">Average</span>
+            <span class="def-desc">Your speed across all typing ever measured. One word counts as five characters.</span>
+          </div>
+          <div class="def">
+            <span class="def-term">Recent</span>
+            <span class="def-desc">Your speed over the last minute. Blank until you have typed a few words in that window.</span>
+          </div>
+          <div class="def">
+            <span class="def-term">Best</span>
+            <span class="def-desc">The fastest sustained stretch you have recorded, measured over at least three seconds.</span>
+          </div>
+          <div class="def">
+            <span class="def-term">Clean</span>
+            <span class="def-desc">Share of words typed without pressing backspace. Higher means fewer corrections.</span>
+          </div>
+          <div class="def">
+            <span class="def-term">Trend</span>
+            <span class="def-desc">One bar per day, scaled against your best day shown. Days with no typing stay blank.</span>
+          </div>
+        </div>
+        <p class="group-footer">
+          Idle time is never counted. Pauses longer than three seconds are
+          excluded, so stepping away does not change your speed either way.
+        </p>
+      </section>
+
+      <section class="group rise">
+        <h2 class="group-header">Privacy</h2>
+        <div class="card">
+          <div class="row">
+            <span class="row-label">Data leaves this device</span>
+            <span class="row-value positive">Never</span>
+          </div>
+          <div class="row">
+            <span class="row-label">Password and payment fields</span>
+            <span class="row-value positive">Ignored</span>
+          </div>
+          <div class="row">
+            <span class="row-label">Words containing digits or symbols</span>
+            <span class="row-value positive">Discarded</span>
+          </div>
+          <div class="row">
+            <span class="row-label">Order words were typed in</span>
+            <span class="row-value positive">Not recorded</span>
+          </div>
+        </div>
+        <p class="group-footer">
+          Only whole alphabetic words are kept, and only once one has recurred at
+          least three times. Statistics are stored as counts and timings, so the
+          text you wrote cannot be reconstructed.
+        </p>
+      </section>
+
+      <section class="group rise">
+        <h2 class="group-header">Data</h2>
+        <button class="action-row destructive" id="reset">Reset All Data</button>
+        <p class="group-footer">Permanently deletes every statistic stored on this device.</p>
+      </section>
+    </div>
+
+    <script src="render.js"></script>
+    <script src="dashboard.js"></script>
+  </body>
+</html>

@@ -1,0 +1,86 @@
+/* popup.css — layout specific to the 340px toolbar popup.
+ * Shared tokens and primitives live in theme.css.
+ */
+
+body {
+  width: 340px;
+  padding: 0 0 14px;
+}
+
+/* ----------------------------------------------------------------- Nav ---
+ * A translucent bar that mimics a native navigation bar: hairline underline,
+ * backdrop blur so content dissolves beneath it rather than clipping.
+ */
+.nav {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 11px var(--inset);
+  background: color-mix(in srgb, var(--canvas) 82%, transparent);
+  backdrop-filter: saturate(180%) blur(20px);
+  -webkit-backdrop-filter: saturate(180%) blur(20px);
+}
+
+.nav::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 1px;
+  transform: scaleY(0.5);
+  background: var(--separator);
+}
+
+.nav-title {
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: -0.015em;
+}
+
+.nav-action {
+  background: none;
+  border: 0;
+  padding: 0;
+  font: inherit;
+  font-size: 14px;
+  letter-spacing: -0.01em;
+  color: var(--accent);
+  cursor: pointer;
+}
+
+.nav-action:active { opacity: 0.4; }
+
+main { padding: 0 var(--inset); }
+
+/* The hero gets room to breathe; it is the only thing shouting. */
+.hero {
+  padding: 26px 0 18px;
+}
+
+/* The trend sits directly beneath the hero, reading as its supporting line. */
+.trend-block { margin-bottom: 20px; }
+
+/* Explanatory line beneath the segment row. */
+.caption {
+  margin: 8px 2px 0;
+  font-size: 11px;
+  line-height: 1.4;
+  color: var(--label-3);
+  text-align: center;
+}
+
+/* Popup lists are intentionally shallow. Depth lives in the dashboard. */
+.group { margin-top: 20px; }
+
+.foot {
+  margin-top: 18px;
+  padding: 0 var(--inset);
+  font-size: 11px;
+  color: var(--label-3);
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+}
