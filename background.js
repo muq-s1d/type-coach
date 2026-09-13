@@ -90,13 +90,21 @@ function buildTrend(days, span) {
   return out;
 }
 
-async function loadStats() {
-  const res = await chrome.storage.local.get(STORE_KEY);
-  return res[STORE_KEY] || emptyStats();
+// Storage is accessed in callback form deliberately. Chrome's chrome.* APIs
+// return promises, but Firefox's chrome.* namespace is callback-based; the
+// callback form is the one style both browsers accept.
+function loadStats() {
+  return new Promise((resolve) => {
+    chrome.storage.local.get(STORE_KEY, (res) => {
+      resolve((res && res[STORE_KEY]) || emptyStats());
+    });
+  });
 }
 
-async function saveStats(stats) {
-  await chrome.storage.local.set({ [STORE_KEY]: stats });
+function saveStats(stats) {
+  return new Promise((resolve) => {
+    chrome.storage.local.set({ [STORE_KEY]: stats }, () => resolve());
+  });
 }
 
 // Standard WPM convention: one "word" = 5 characters.

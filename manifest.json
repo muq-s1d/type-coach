@@ -5,7 +5,14 @@
   "description": "Tracks your real typing speed as you browse and shows which words you get stuck on. All data stays on your device.",
   "permissions": ["storage"],
   "background": {
-    "service_worker": "background.js"
+    "service_worker": "background.js",
+    "scripts": ["background.js"]
+  },
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "type-coach@muq-s1d.github.io",
+      "strict_min_version": "121.0"
+    }
   },
   "content_scripts": [
     {
