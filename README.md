@@ -11,9 +11,9 @@
 [![Version](https://img.shields.io/badge/version-0.1.0-8E8E93?style=flat-square)](#)
 [![License](https://img.shields.io/badge/license-MIT-8E8E93?style=flat-square)](LICENSE)
 
-[![Watch the Type Coach launch video](store/demo.jpg)](store/demo.mp4)
+![Type Coach launch video](store/demo.gif)
 
-<sub>Click the image to watch the 21 second launch video.</sub>
+<sub>[Download the 21 second video with sound](https://github.com/muq-s1d/type-coach/raw/main/store/demo.mp4).</sub>
 
 </div>
 
