@@ -157,7 +157,7 @@ clause and resubmit; the earlier review does not count against you.
 cd type-coach
 rm -f store/type-coach-*.zip
 zip -rq store/type-coach-$(python3 -c "import json;print(json.load(open('manifest.json'))['version'])").zip . \
-  -x ".git/*" "store/*" "*.zip" "__*" ".playwright-mcp/*"
+  -x ".git/*" "store/*" "*.zip" "__*" ".playwright-mcp/*" "brag-output/*"
 ```
 
 Bump `version` in `manifest.json` before every re-upload; the store rejects a

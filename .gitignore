@@ -1,2 +1,5 @@
 # Store upload packages are build artifacts
 store/*.zip
+
+# Local video render workspace
+brag-output/
